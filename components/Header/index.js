@@ -12,23 +12,29 @@
 let myTemp = '98\u00B0';
 parent = document.querySelector('.header-container');
 
-window.navigator.geolocation.getCurrentPosition(
-    (pos) => {
-        myLat = pos.coords.latitude;
-        myLong = pos.coords.longitude;
-        axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${myLat}&lon=${myLong}&units=imperial&appid=c179ff3c121ab234c61e31416c48c4fd`)
-            .then(res => {
-                myTemp = `${Math.floor(res.data.main.temp)}\u00B0`;
-            })
-            .then(() => {
-                parent.appendChild(Header());
-            })
-            .catch(err => {
-                myTemp = '98\u00B0';
-                parent.appendChild(Header());
-            })
+window.navigator.permissions.query({
+    name: 'geolocation'
+}).then(res => {
+    if(res.state !== 'denied'){
+    
+        window.navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                myLat = pos.coords.latitude;
+                myLong = pos.coords.longitude;
+        
+                axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${myLat}&lon=${myLong}&units=imperial&appid=c179ff3c121ab234c61e31416c48c4fd`)
+                    .then(res => {
+                        myTemp = `${Math.floor(res.data.main.temp)}\u00B0`;
+                        parent.appendChild(Header());
+                    })
+                    .catch(err => {
+                        myTemp = '98\u00B0';
+                    })
+            }
+        )
+    
     }
-)
+})
 
 function Header() {
 
