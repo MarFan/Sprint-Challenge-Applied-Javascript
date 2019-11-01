@@ -39,7 +39,8 @@ function Header() {
 	const headerTemp = document.createElement('span');
 
 	newHeader.classList.add('header');
-	dateSpan.classList.add('date');
+    dateSpan.classList.add('date');
+    headerTemp.classList.add('temp');
 
 	headerTemp.textContent = myTemp;
     headerTitle.textContent = 'Lambda Times';
